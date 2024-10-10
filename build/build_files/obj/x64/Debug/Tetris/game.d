@@ -1,7 +1,8 @@
 obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
- /usr/include/stdc-predef.h /usr/include/c++/9/fstream \
- /usr/include/c++/9/istream /usr/include/c++/9/ios \
- /usr/include/c++/9/iosfwd \
+ /usr/include/stdc-predef.h ../external/raylib-master/src/raylib.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
+ /usr/include/c++/9/fstream /usr/include/c++/9/istream \
+ /usr/include/c++/9/ios /usr/include/c++/9/iosfwd \
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/9/bits/os_defines.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -17,7 +18,6 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
@@ -144,8 +144,7 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
  /usr/include/c++/9/bits/stl_uninitialized.h \
  /usr/include/c++/9/bits/stl_vector.h \
  /usr/include/c++/9/bits/stl_bvector.h /usr/include/c++/9/bits/vector.tcc \
- ../external/raylib-master/src/raylib.h ../../src/blocks.cpp \
- ../../src/block.hpp /usr/include/c++/9/map \
+ ../../src/blocks.cpp ../../src/block.hpp /usr/include/c++/9/map \
  /usr/include/c++/9/bits/stl_tree.h \
  /usr/include/c++/9/ext/aligned_buffer.h \
  /usr/include/c++/9/bits/stl_map.h /usr/include/c++/9/tuple \
@@ -156,6 +155,10 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
  ../../src/colors.hpp
 
 /usr/include/stdc-predef.h:
+
+../external/raylib-master/src/raylib.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h:
 
 /usr/include/c++/9/fstream:
 
@@ -200,8 +203,6 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/bits/wchar.h:
 
@@ -520,8 +521,6 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
 /usr/include/c++/9/bits/stl_bvector.h:
 
 /usr/include/c++/9/bits/vector.tcc:
-
-../external/raylib-master/src/raylib.h:
 
 ../../src/blocks.cpp:
 
