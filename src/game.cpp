@@ -1,44 +1,22 @@
 #include "raylib.h"
-#include <fstream>
 #include <iostream>
 #include "game.hpp"
 
-Game::Game() : blocks(GetAllBlocks()), 
-               currentBlock(GetRandomBlock()), 
-               nextBlock(GetRandomBlock()),
-               score(0), 
+Game::Game() : blocks(GetAllBlocks()),
                gameOver(false),
                lastUpdateTime(0),
-               difficulty(0.3),
-               difficultyFactor(1),
-               nextDifficulty(1000),
-               maxDifficulty(64000),
-               difficultyNum(1)
+               movementDelay(0.1f),
+               lastMoveTime(0)
 {
-    InitAudioDevice();
-    music = LoadMusicStream("Sounds/music.mp3");
-    PlayMusicStream(music);
-    rotateSound = LoadSound("Sounds/rotate.mp3");
-    clearSound = LoadSound("Sounds/clear.mp3");
-    gameOverSound = LoadSound("Sounds/gameover.wav");
-    levelUp = LoadSound("Sounds/levelup.mp3");
-}
-
-Game::~Game()
-{
-    UnloadSound(rotateSound);
-    UnloadSound(clearSound);
-    UnloadSound(gameOverSound);
-    UnloadSound(levelUp);
-    UnloadMusicStream(music);
-    CloseAudioDevice();
+    srand(static_cast<unsigned int>(time(0)));
+    currentBlock = GetRandomBlock(); 
+    nextBlock = GetRandomBlock();
 }
 
 void Game::Init(int windowWidth, int windowHeight, int targetFPS, const char *fontPath, int fontSize)
 {
     InitWindow(windowWidth, windowHeight, "Raylib Tetris");
 	SetTargetFPS(targetFPS);
-
 	font = LoadFontEx(fontPath, fontSize, 0, 0);
 }
 
@@ -46,10 +24,10 @@ void Game::Run()
 {
     while (!WindowShouldClose())
 	{
-		UpdateMusicStream(music);
+		UpdateMusicStream(soundManager.music);
 		HandleInput();
 		
-		if (EventTriggered(difficulty))
+		if (EventTriggered(difficultyManager.GetDifficulty()))
 		{
 			MoveBlockDown();
 		}
@@ -61,7 +39,7 @@ void Game::Run()
         DrawRectangleRounded({320, 160,  170, 60}, 0.3, 6, lightBlue);
 
         char difficultyText[10];
-		sprintf(difficultyText, "%d", difficultyNum);
+		sprintf(difficultyText, "%d", difficultyManager.GetDifficultyNum());
 		Vector2 difficultyTextSize = MeasureTextEx(font, difficultyText, 38, 2);
         DrawTextEx(font, difficultyText, {320 + (170 - difficultyTextSize.x) / 2, 170}, 30, 2, WHITE);
 
@@ -74,11 +52,11 @@ void Game::Run()
 		DrawRectangleRounded({320, 55,  170, 60}, 0.3, 6, lightBlue);
 
 		char scoreText[10];
-		sprintf(scoreText, "%d", score);
+		sprintf(scoreText, "%d", scoreManager.GetScore());
 		Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
 		DrawTextEx(font, scoreText, {320 + (170 - textSize.x) / 2, 65}, 38, 2, WHITE);
 
-		int highestScore = GetHighestScore();
+		int highestScore = scoreManager.GetHighestScore();
 		char highScoreText[10];
 		sprintf(highScoreText, "%d", highestScore);
 		Vector2 scoreTextSize = MeasureTextEx(font, highScoreText, 38, 2);
@@ -91,7 +69,8 @@ void Game::Run()
 		EndDrawing();	
 	}
 
-    CloseWindow();
+    Reset();
+    ClearBackground(darkBlue);
 }
 
 Block Game::GetRandomBlock()
@@ -111,6 +90,7 @@ std::vector<Block> Game::GetAllBlocks()
 {
     return {IBlock(), JBlock(), LBlock(), OBlock(), SBlock(), TBlock(), ZBlock()};
 }
+
 void Game::Draw()
 {
     grid.Draw();
@@ -137,14 +117,41 @@ void Game::Draw()
 
 void Game::HandleInput()
 {
-    int keyPressed = GetKeyPressed();
-    if (gameOver && keyPressed == KEY_R)
+    //int keyPressed = GetKeyPressed();
+    float currentTime = GetTime();  // Get current time in seconds
+
+    if (gameOver && IsKeyPressed(KEY_R))  // Reset game only on initial key press
     {
         gameOver = false;
         Reset();
     }
 
-    switch (keyPressed)
+    if (IsKeyDown(KEY_LEFT) && currentTime - lastMoveTime >= movementDelay)  // Move left
+    {
+        MoveBlockLeft();
+        lastMoveTime = currentTime;  // Update the last move time
+    }
+    if (IsKeyDown(KEY_RIGHT) && currentTime - lastMoveTime >= movementDelay)  // Move right
+    {
+        MoveBlockRight();
+        lastMoveTime = currentTime;  // Update the last move time
+    }
+    if (IsKeyDown(KEY_DOWN) && currentTime - lastMoveTime >= movementDelay)  // Move down
+    {
+        MoveBlockDown();
+        if (!gameOver)
+        {
+            scoreManager.UpdateScore(0, 5, difficultyManager.GetDifficultyFactor());
+            difficultyManager.UpdateDifficulty(scoreManager.GetScore(), soundManager.levelUp);
+        }
+        lastMoveTime = currentTime;  // Update the last move time
+    }
+    if (IsKeyPressed(KEY_SPACE))  // Only rotate block on initial SPACE press
+    {
+        RotateBlock();
+    }
+    
+    /* switch (keyPressed)
     {
         case KEY_LEFT:
         {
@@ -161,8 +168,10 @@ void Game::HandleInput()
             MoveBlockDown();
             if (!gameOver)
             {
-                UpdateScore(0, 5);
+                scoreManager.UpdateScore(0, 5, difficultyManager.GetDifficultyFactor());
+                difficultyManager.UpdateDifficulty(scoreManager.GetScore(), soundManager.levelUp);
             }
+
             break;
         }
         case KEY_SPACE:
@@ -170,7 +179,7 @@ void Game::HandleInput()
             RotateBlock();
             break;
         }
-    }
+    } */
 }
 
 void Game::MoveBlockLeft()
@@ -197,19 +206,7 @@ void Game::MoveBlockRight()
     }
 }
 
-void Game::SaveHighestScore()
-{
-    std::ofstream file("Data/scores.txt");
-    if (file.is_open())
-    {
-        file << score;
-        file.close();
-    }
-    else
-    {
-        std::cerr << "Unable to open file for writing.\n";
-    }
-}
+
 
 bool Game::EventTriggered(double interval)
 {
@@ -220,36 +217,6 @@ bool Game::EventTriggered(double interval)
 		return true;
 	}
 	return false;
-}
-
-void Game::UpdateDifficulty()
-{
-    if (score >= nextDifficulty && score <= maxDifficulty)
-    {
-        difficulty = difficulty * 0.9;
-        nextDifficulty *= 2;
-        difficultyFactor += 0.5;
-        ++difficultyNum;
-        PlaySound(levelUp);
-    }
-}
-
-int Game::GetHighestScore()
-{
-    std::ifstream file("Data/scores.txt");
-    int highestScore = 0;
-
-    if (file.is_open())
-    {
-        file >> highestScore;
-        file.close();
-    }
-    else
-    {
-        std::cerr << "Unable to open file for reading.\n";
-    }
-
-    return highestScore;
 }
 
 void Game::MoveBlockDown()
@@ -290,7 +257,7 @@ void Game::RotateBlock()
         }
         else
         {
-            PlaySound(rotateSound);
+            PlaySound(soundManager.rotateSound);
         }
     }
 }
@@ -307,15 +274,15 @@ void Game::LockBlock()
     if (!BlockFits())
     {
         gameOver = true;
-        PlaySound(gameOverSound);
+        PlaySound(soundManager.gameOverSound);
     }
 
     nextBlock = GetRandomBlock();
     int rowsCleared = grid.ClearFullRows();
     if (rowsCleared > 0)
     {
-        PlaySound(clearSound);
-        UpdateScore(rowsCleared, 0);
+        PlaySound(soundManager.clearSound);
+        scoreManager.UpdateScore(rowsCleared, 0, difficultyManager.GetDifficultyFactor());
     }
 }
 
@@ -338,41 +305,8 @@ void Game::Reset()
     blocks = GetAllBlocks();
     currentBlock = GetRandomBlock();
     nextBlock = GetRandomBlock();
-    score = 0;
-}
-
-void Game::UpdateScore(int linesCleared, int moveDownPoints)
-{
-    switch (linesCleared)
-    {
-        case 1:
-        {
-            score += 100 * difficultyFactor;
-            break;
-        }
-        case 2:
-        {
-            score += 300 * difficultyFactor;
-            break;
-        }
-        case 3:
-        {
-            score += 600 * difficultyFactor;
-            break;
-        }
-        case 4:
-        {
-            score += 1000 * difficultyFactor;
-            break;
-        }
-    }
-
-    score += moveDownPoints;
-
-    if (score > GetHighestScore())
-    {
-        SaveHighestScore();
-    }
-
-    UpdateDifficulty();
+    scoreManager.ResetScore();
+    difficultyManager.ResetDifficulty();
+    StopMusicStream(soundManager.music);
+    PlayMusicStream(soundManager.music);
 }

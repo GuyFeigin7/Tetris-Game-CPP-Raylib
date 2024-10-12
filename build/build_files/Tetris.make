@@ -112,17 +112,27 @@ OBJECTS :=
 GENERATED += $(OBJDIR)/block.o
 GENERATED += $(OBJDIR)/blocks.o
 GENERATED += $(OBJDIR)/colors.o
+GENERATED += $(OBJDIR)/difficultyManager.o
 GENERATED += $(OBJDIR)/game.o
 GENERATED += $(OBJDIR)/grid.o
+GENERATED += $(OBJDIR)/inputHandler.o
 GENERATED += $(OBJDIR)/main.o
+GENERATED += $(OBJDIR)/menu.o
 GENERATED += $(OBJDIR)/position.o
+GENERATED += $(OBJDIR)/scoreManager.o
+GENERATED += $(OBJDIR)/soundManager.o
 OBJECTS += $(OBJDIR)/block.o
 OBJECTS += $(OBJDIR)/blocks.o
 OBJECTS += $(OBJDIR)/colors.o
+OBJECTS += $(OBJDIR)/difficultyManager.o
 OBJECTS += $(OBJDIR)/game.o
 OBJECTS += $(OBJDIR)/grid.o
+OBJECTS += $(OBJDIR)/inputHandler.o
 OBJECTS += $(OBJDIR)/main.o
+OBJECTS += $(OBJDIR)/menu.o
 OBJECTS += $(OBJDIR)/position.o
+OBJECTS += $(OBJDIR)/scoreManager.o
+OBJECTS += $(OBJDIR)/soundManager.o
 
 # Rules
 # #############################################
@@ -195,16 +205,31 @@ $(OBJDIR)/blocks.o: ../../src/blocks.cpp
 $(OBJDIR)/colors.o: ../../src/colors.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/difficultyManager.o: ../../src/difficultyManager.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/game.o: ../../src/game.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/grid.o: ../../src/grid.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/inputHandler.o: ../../src/inputHandler.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: ../../src/main.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/menu.o: ../../src/menu.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/position.o: ../../src/position.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/scoreManager.o: ../../src/scoreManager.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/soundManager.o: ../../src/soundManager.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

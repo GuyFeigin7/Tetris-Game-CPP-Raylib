@@ -1,8 +1,7 @@
 obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
  /usr/include/stdc-predef.h ../external/raylib-master/src/raylib.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
- /usr/include/c++/9/fstream /usr/include/c++/9/istream \
- /usr/include/c++/9/ios /usr/include/c++/9/iosfwd \
+ /usr/include/c++/9/iostream \
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/9/bits/os_defines.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -11,9 +10,10 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
  /usr/include/x86_64-linux-gnu/c++/9/bits/cpu_defines.h \
- /usr/include/c++/9/bits/stringfwd.h /usr/include/c++/9/bits/memoryfwd.h \
- /usr/include/c++/9/bits/postypes.h /usr/include/c++/9/cwchar \
- /usr/include/wchar.h \
+ /usr/include/c++/9/ostream /usr/include/c++/9/ios \
+ /usr/include/c++/9/iosfwd /usr/include/c++/9/bits/stringfwd.h \
+ /usr/include/c++/9/bits/memoryfwd.h /usr/include/c++/9/bits/postypes.h \
+ /usr/include/c++/9/cwchar /usr/include/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
@@ -133,13 +133,10 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
  /usr/include/c++/9/bits/streambuf_iterator.h \
  /usr/include/x86_64-linux-gnu/c++/9/bits/ctype_inline.h \
  /usr/include/c++/9/bits/locale_facets.tcc \
- /usr/include/c++/9/bits/basic_ios.tcc /usr/include/c++/9/ostream \
- /usr/include/c++/9/bits/ostream.tcc /usr/include/c++/9/bits/istream.tcc \
- /usr/include/c++/9/bits/codecvt.h \
- /usr/include/x86_64-linux-gnu/c++/9/bits/basic_file.h \
- /usr/include/x86_64-linux-gnu/c++/9/bits/c++io.h \
- /usr/include/c++/9/bits/fstream.tcc /usr/include/c++/9/iostream \
- ../../src/game.hpp ../../src/grid.hpp /usr/include/c++/9/vector \
+ /usr/include/c++/9/bits/basic_ios.tcc \
+ /usr/include/c++/9/bits/ostream.tcc /usr/include/c++/9/istream \
+ /usr/include/c++/9/bits/istream.tcc ../../src/game.hpp \
+ ../../src/grid.hpp /usr/include/c++/9/vector \
  /usr/include/c++/9/bits/stl_construct.h \
  /usr/include/c++/9/bits/stl_uninitialized.h \
  /usr/include/c++/9/bits/stl_vector.h \
@@ -152,7 +149,8 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
  /usr/include/c++/9/array /usr/include/c++/9/bits/uses_allocator.h \
  /usr/include/c++/9/bits/invoke.h /usr/include/c++/9/bits/stl_multimap.h \
  /usr/include/c++/9/bits/erase_if.h ../../src/position.hpp \
- ../../src/colors.hpp
+ ../../src/colors.hpp ../../src/scoreManager.hpp \
+ ../../src/difficultyManager.hpp ../../src/soundManager.hpp
 
 /usr/include/stdc-predef.h:
 
@@ -160,13 +158,7 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h:
 
-/usr/include/c++/9/fstream:
-
-/usr/include/c++/9/istream:
-
-/usr/include/c++/9/ios:
-
-/usr/include/c++/9/iosfwd:
+/usr/include/c++/9/iostream:
 
 /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h:
 
@@ -185,6 +177,12 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/x86_64-linux-gnu/c++/9/bits/cpu_defines.h:
+
+/usr/include/c++/9/ostream:
+
+/usr/include/c++/9/ios:
+
+/usr/include/c++/9/iosfwd:
 
 /usr/include/c++/9/bits/stringfwd.h:
 
@@ -490,21 +488,11 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
 
 /usr/include/c++/9/bits/basic_ios.tcc:
 
-/usr/include/c++/9/ostream:
-
 /usr/include/c++/9/bits/ostream.tcc:
 
+/usr/include/c++/9/istream:
+
 /usr/include/c++/9/bits/istream.tcc:
-
-/usr/include/c++/9/bits/codecvt.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/basic_file.h:
-
-/usr/include/x86_64-linux-gnu/c++/9/bits/c++io.h:
-
-/usr/include/c++/9/bits/fstream.tcc:
-
-/usr/include/c++/9/iostream:
 
 ../../src/game.hpp:
 
@@ -553,3 +541,9 @@ obj/x64/Debug/Tetris/game.o: ../../src/game.cpp \
 ../../src/position.hpp:
 
 ../../src/colors.hpp:
+
+../../src/scoreManager.hpp:
+
+../../src/difficultyManager.hpp:
+
+../../src/soundManager.hpp:
