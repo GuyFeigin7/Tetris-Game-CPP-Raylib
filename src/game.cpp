@@ -6,7 +6,9 @@ Game::Game() : blocks(GetAllBlocks()),
                gameOver(false),
                lastUpdateTime(0),
                movementDelay(0.1f),
-               lastMoveTime(0)
+               lastMoveTime(0),
+               gamePaused(false),
+               exitGame(false)
 {
     srand(static_cast<unsigned int>(time(0)));
     currentBlock = GetRandomBlock(); 
@@ -24,49 +26,61 @@ void Game::Run()
 {
     while (!WindowShouldClose())
 	{
-		UpdateMusicStream(soundManager.music);
 		HandleInput();
 		
-		if (EventTriggered(difficultyManager.GetDifficulty()))
-		{
-			MoveBlockDown();
-		}
+        if (exitGame)
+        {
+            break;
+        }
+        else if (gamePaused)
+        {
+            DisplayPauseMenu();
+        }
+        else
+        {
+            UpdateMusicStream(soundManager.music);
 
-		BeginDrawing();
-		ClearBackground(darkBlue);
-		DrawTextEx(font, "Score", {365, 15}, 38, 2, WHITE);
-        DrawTextEx(font, "Difficulty", {330, 125}, 28, 2, GREEN);
-        DrawRectangleRounded({320, 160,  170, 60}, 0.3, 6, lightBlue);
+            if (EventTriggered(difficultyManager.GetDifficulty()))
+            {
+                MoveBlockDown();
+            }
 
-        char difficultyText[10];
-		sprintf(difficultyText, "%d", difficultyManager.GetDifficultyNum());
-		Vector2 difficultyTextSize = MeasureTextEx(font, difficultyText, 38, 2);
-        DrawTextEx(font, difficultyText, {320 + (170 - difficultyTextSize.x) / 2, 170}, 30, 2, WHITE);
+            BeginDrawing();
+            ClearBackground(darkBlue);
+            DrawTextEx(font, "Score", {365, 15}, 38, 2, WHITE);
+            DrawTextEx(font, "Difficulty", {330, 125}, 28, 2, GREEN);
+            DrawRectangleRounded({320, 160,  170, 60}, 0.3, 6, lightBlue);
 
-		DrawTextEx(font, "Next", {370, 240}, 38, 2, WHITE);
-		if (gameOver)
-		{
-			DrawTextEx(font, "GAME OVER", {330, 520}, 29, 2, RED);
-			DrawTextEx(font, "Press 'R' to\nrestart", {330, 565}, 20, 2, WHITE);
-		}
-		DrawRectangleRounded({320, 55,  170, 60}, 0.3, 6, lightBlue);
+            char difficultyText[10];
+            sprintf(difficultyText, "%d", difficultyManager.GetDifficultyNum());
+            Vector2 difficultyTextSize = MeasureTextEx(font, difficultyText, 38, 2);
+            DrawTextEx(font, difficultyText, {320 + (170 - difficultyTextSize.x) / 2, 170}, 30, 2, WHITE);
 
-		char scoreText[10];
-		sprintf(scoreText, "%d", scoreManager.GetScore());
-		Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
-		DrawTextEx(font, scoreText, {320 + (170 - textSize.x) / 2, 65}, 38, 2, WHITE);
+            DrawTextEx(font, "Next", {370, 240}, 38, 2, WHITE);
+            if (gameOver)
+            {
+                DrawTextEx(font, "GAME OVER", {330, 520}, 29, 2, RED);
+                DrawTextEx(font, "Press 'R' to\nrestart", {330, 565}, 20, 2, WHITE);
+            }
+            DrawRectangleRounded({320, 55,  170, 60}, 0.3, 6, lightBlue);
 
-		int highestScore = scoreManager.GetHighestScore();
-		char highScoreText[10];
-		sprintf(highScoreText, "%d", highestScore);
-		Vector2 scoreTextSize = MeasureTextEx(font, highScoreText, 38, 2);
-		DrawTextEx(font, "High Score", {320, 425}, 30, 2, YELLOW);
-		DrawTextEx(font, highScoreText, {320 + (185 - scoreTextSize.x) / 2, 465}, 30, 2, WHITE);
-		
-		DrawRectangleRounded({320, 280,  170, 140}, 0.3, 6, lightBlue); //Next block rectangle
-		Draw();
+            char scoreText[10];
+            sprintf(scoreText, "%d", scoreManager.GetScore());
+            Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
+            DrawTextEx(font, scoreText, {320 + (170 - textSize.x) / 2, 65}, 38, 2, WHITE);
 
-		EndDrawing();	
+            int highestScore = scoreManager.GetHighestScore();
+            char highScoreText[10];
+            sprintf(highScoreText, "%d", highestScore);
+            Vector2 scoreTextSize = MeasureTextEx(font, highScoreText, 38, 2);
+            DrawTextEx(font, "High Score", {320, 425}, 30, 2, YELLOW);
+            DrawTextEx(font, highScoreText, {320 + (185 - scoreTextSize.x) / 2, 465}, 30, 2, WHITE);
+            
+            DrawRectangleRounded({320, 280,  170, 140}, 0.3, 6, lightBlue); //Next block rectangle
+            Draw();
+
+            EndDrawing();
+        }
 	}
 
     Reset();
@@ -117,7 +131,6 @@ void Game::Draw()
 
 void Game::HandleInput()
 {
-    //int keyPressed = GetKeyPressed();
     float currentTime = GetTime();  // Get current time in seconds
 
     if (gameOver && IsKeyPressed(KEY_R))  // Reset game only on initial key press
@@ -125,7 +138,10 @@ void Game::HandleInput()
         gameOver = false;
         Reset();
     }
-
+    if (IsKeyPressed(KEY_P)) // Pause game and display pause menu
+    {
+        gamePaused = true; 
+    }
     if (IsKeyDown(KEY_LEFT) && currentTime - lastMoveTime >= movementDelay)  // Move left
     {
         MoveBlockLeft();
@@ -150,36 +166,6 @@ void Game::HandleInput()
     {
         RotateBlock();
     }
-    
-    /* switch (keyPressed)
-    {
-        case KEY_LEFT:
-        {
-            MoveBlockLeft();
-            break;
-        }
-        case KEY_RIGHT:
-        {
-            MoveBlockRight();
-            break;
-        }
-        case KEY_DOWN:
-        {
-            MoveBlockDown();
-            if (!gameOver)
-            {
-                scoreManager.UpdateScore(0, 5, difficultyManager.GetDifficultyFactor());
-                difficultyManager.UpdateDifficulty(scoreManager.GetScore(), soundManager.levelUp);
-            }
-
-            break;
-        }
-        case KEY_SPACE:
-        {
-            RotateBlock();
-            break;
-        }
-    } */
 }
 
 void Game::MoveBlockLeft()
@@ -206,8 +192,6 @@ void Game::MoveBlockRight()
     }
 }
 
-
-
 bool Game::EventTriggered(double interval)
 {
     double currentTime = GetTime();
@@ -217,6 +201,49 @@ bool Game::EventTriggered(double interval)
 		return true;
 	}
 	return false;
+}
+
+void Game::DisplayPauseMenu()
+{
+    int selectedOption = 0;
+    const char* options[] = { "Resume", "Exit to Main Menu" };
+    
+    while (gamePaused)
+    {
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        // Draw the pause menu options
+        for (int i = 0; i < 2; i++)
+        {
+            Color color = (i == selectedOption) ? GREEN : WHITE;
+            DrawText(options[i], 50, 200 + i * 50, 40, color);
+        }
+
+        // Handle input to navigate the pause menu
+        if (IsKeyPressed(KEY_DOWN))
+        {
+            selectedOption = (selectedOption + 1) % 2;
+        }
+        else if (IsKeyPressed(KEY_UP))
+        {
+            selectedOption = (selectedOption - 1 + 2) % 2;
+        }
+        else if (IsKeyPressed(KEY_ENTER))
+        {
+            if (selectedOption == 0)  // Resume game
+            {
+                gamePaused = false;
+            }
+            else if (selectedOption == 1)  // Exit to Main Menu
+            {
+                gamePaused = false;
+                exitGame = true;
+            }
+        }
+
+        EndDrawing();
+    }
 }
 
 void Game::MoveBlockDown()
@@ -309,4 +336,7 @@ void Game::Reset()
     difficultyManager.ResetDifficulty();
     StopMusicStream(soundManager.music);
     PlayMusicStream(soundManager.music);
+    gameOver = false;
+    gamePaused = false;
+    exitGame = false;
 }

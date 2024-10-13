@@ -27,6 +27,7 @@ private:
     void MoveBlockLeft();
     void MoveBlockRight();
     bool EventTriggered(double interval);
+    void DisplayPauseMenu();
 
     Grid grid;
     std::vector<Block> blocks;
@@ -37,6 +38,8 @@ private:
     SoundManager soundManager;
     
     bool gameOver;
+    bool gamePaused;
+    bool exitGame;
     double lastUpdateTime;
     Font font;
     float movementDelay;  // Delay between moves in seconds
