@@ -208,7 +208,7 @@ bool Game::EventTriggered(double interval)
 void Game::DisplayPauseMenu()
 {
     int selectedOption = 0;
-    const char* options[] = { "Resume", "Exit to Main Menu" };
+    std::vector<std::string> options = { "Resume", "Restart Game", "Exit to Main Menu" };
     
     while (gamePaused)
     {
@@ -216,22 +216,22 @@ void Game::DisplayPauseMenu()
         ClearBackground(BLACK);
 
         // Draw the pause menu options
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < options.size(); ++i)
         {
             Color color = (i == selectedOption) ? GREEN : WHITE;
-            DrawText(options[i], 50, 200 + i * 50, 40, color);
+            DrawText(options[i].c_str(), 50, 200 + i * 50, 40, color);
         }
 
         // Handle input to navigate the pause menu
         if (IsKeyPressed(KEY_DOWN))
         {
-            selectedOption = (selectedOption + 1) % 2;
             SoundManager::GetInstance().PlaySelectedOptionSound();
+            selectedOption = (selectedOption + 1) % options.size();
         }
         else if (IsKeyPressed(KEY_UP))
         {
-            selectedOption = (selectedOption - 1 + 2) % 2;
             SoundManager::GetInstance().PlaySelectedOptionSound();
+            selectedOption = (selectedOption - 1 + options.size()) % options.size();
         }
         else if (IsKeyPressed(KEY_ENTER))
         {
@@ -240,7 +240,11 @@ void Game::DisplayPauseMenu()
             {
                 gamePaused = false;
             }
-            else if (selectedOption == 1)  // Exit to Main Menu
+            else if (selectedOption == 1) // Restart Game
+            {
+                Reset();
+            }
+            else if (selectedOption == 2)  // Exit to Main Menu
             {
                 gamePaused = false;
                 exitGame = true;

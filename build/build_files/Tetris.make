@@ -115,7 +115,6 @@ GENERATED += $(OBJDIR)/colors.o
 GENERATED += $(OBJDIR)/difficultyManager.o
 GENERATED += $(OBJDIR)/game.o
 GENERATED += $(OBJDIR)/grid.o
-GENERATED += $(OBJDIR)/inputHandler.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/menu.o
 GENERATED += $(OBJDIR)/position.o
@@ -127,7 +126,6 @@ OBJECTS += $(OBJDIR)/colors.o
 OBJECTS += $(OBJDIR)/difficultyManager.o
 OBJECTS += $(OBJDIR)/game.o
 OBJECTS += $(OBJDIR)/grid.o
-OBJECTS += $(OBJDIR)/inputHandler.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/menu.o
 OBJECTS += $(OBJDIR)/position.o
@@ -212,9 +210,6 @@ $(OBJDIR)/game.o: ../../src/game.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/grid.o: ../../src/grid.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/inputHandler.o: ../../src/inputHandler.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: ../../src/main.cpp

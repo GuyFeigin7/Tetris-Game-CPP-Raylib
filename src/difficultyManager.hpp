@@ -13,9 +13,9 @@ public:
     void ResetDifficulty();
 
 private:
-    double difficulty;
-    double difficultyFactor;
-    int nextDifficulty;
+    double difficulty; // Current difficulty level. Lower = harder.
+    double difficultyFactor; // Scoring is increased by this factor based on difficulty level
+    int nextDifficulty; 
     int maxDifficulty;
-    int difficultyNum;
+    int difficultyNum; //Numerical representation of the difficulty to be shown on screen.
 };
