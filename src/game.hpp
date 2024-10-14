@@ -4,7 +4,6 @@
 #include "blocks.cpp"
 #include "scoreManager.hpp"
 #include "difficultyManager.hpp"
-#include "soundManager.hpp"
 
 class Game
 {
@@ -35,7 +34,6 @@ private:
     Block nextBlock;
     ScoreManager scoreManager;
     DifficultyManager difficultyManager;
-    SoundManager soundManager;
     
     bool gameOver;
     bool gamePaused;

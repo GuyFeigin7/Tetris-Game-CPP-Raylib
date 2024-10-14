@@ -10,7 +10,7 @@ class Menu
 {
 public:
     Menu(const std::vector<std::string>& menuOptions, Game& game);
-    ~Menu();
+
     // Updates the menu by handling input
     void Update();
 
@@ -26,7 +26,5 @@ private:
     std::vector<std::string> options;  // Stores menu options
     int selectedOption;                // Index of the selected option
     GameState gameState;
-    Sound selectedOptionSound;
-    Sound enterSound;
     Game& game;
 };  

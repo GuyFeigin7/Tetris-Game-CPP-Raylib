@@ -1,4 +1,5 @@
 #include "difficultyManager.hpp"
+#include "soundManager.hpp"
 
 DifficultyManager::DifficultyManager() : difficulty(0.3),
                                          difficultyFactor(1),
@@ -8,7 +9,7 @@ DifficultyManager::DifficultyManager() : difficulty(0.3),
 {
 }
 
-void DifficultyManager::UpdateDifficulty(int currentScore, const Sound& levelUpSound)
+void DifficultyManager::UpdateDifficulty(int currentScore)
 {
     if (currentScore >= nextDifficulty && currentScore <= maxDifficulty)
     {
@@ -16,7 +17,7 @@ void DifficultyManager::UpdateDifficulty(int currentScore, const Sound& levelUpS
         nextDifficulty *= 2;
         difficultyFactor += 0.5;
         ++difficultyNum;
-        PlaySound(levelUpSound);
+        SoundManager::GetInstance().PlayLevelUpSound();
     }
 }
 

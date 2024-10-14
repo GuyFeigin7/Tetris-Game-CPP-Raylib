@@ -1,6 +1,8 @@
-#include "raylib.h"
 #include <iostream>
+
+#include "raylib.h"
 #include "game.hpp"
+#include "soundManager.hpp"
 
 Game::Game() : blocks(GetAllBlocks()),
                gameOver(false),
@@ -38,7 +40,7 @@ void Game::Run()
         }
         else
         {
-            UpdateMusicStream(soundManager.music);
+            SoundManager::GetInstance().PlayMusic();
 
             if (EventTriggered(difficultyManager.GetDifficulty()))
             {
@@ -158,7 +160,7 @@ void Game::HandleInput()
         if (!gameOver)
         {
             scoreManager.UpdateScore(0, 5, difficultyManager.GetDifficultyFactor());
-            difficultyManager.UpdateDifficulty(scoreManager.GetScore(), soundManager.levelUp);
+            difficultyManager.UpdateDifficulty(scoreManager.GetScore());
         }
         lastMoveTime = currentTime;  // Update the last move time
     }
@@ -224,13 +226,16 @@ void Game::DisplayPauseMenu()
         if (IsKeyPressed(KEY_DOWN))
         {
             selectedOption = (selectedOption + 1) % 2;
+            SoundManager::GetInstance().PlaySelectedOptionSound();
         }
         else if (IsKeyPressed(KEY_UP))
         {
             selectedOption = (selectedOption - 1 + 2) % 2;
+            SoundManager::GetInstance().PlaySelectedOptionSound();
         }
         else if (IsKeyPressed(KEY_ENTER))
         {
+            SoundManager::GetInstance().PlayEnterSound();
             if (selectedOption == 0)  // Resume game
             {
                 gamePaused = false;
@@ -284,7 +289,7 @@ void Game::RotateBlock()
         }
         else
         {
-            PlaySound(soundManager.rotateSound);
+            SoundManager::GetInstance().PlayRotateSound();
         }
     }
 }
@@ -301,14 +306,14 @@ void Game::LockBlock()
     if (!BlockFits())
     {
         gameOver = true;
-        PlaySound(soundManager.gameOverSound);
+        SoundManager::GetInstance().PlayGameOverSound();
     }
 
     nextBlock = GetRandomBlock();
     int rowsCleared = grid.ClearFullRows();
     if (rowsCleared > 0)
     {
-        PlaySound(soundManager.clearSound);
+        SoundManager::GetInstance().PlayClearSound();
         scoreManager.UpdateScore(rowsCleared, 0, difficultyManager.GetDifficultyFactor());
     }
 }
@@ -334,8 +339,8 @@ void Game::Reset()
     nextBlock = GetRandomBlock();
     scoreManager.ResetScore();
     difficultyManager.ResetDifficulty();
-    StopMusicStream(soundManager.music);
-    PlayMusicStream(soundManager.music);
+    SoundManager::GetInstance().StopMusic();
+    SoundManager::GetInstance().ResetMusic();
     gameOver = false;
     gamePaused = false;
     exitGame = false;

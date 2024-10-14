@@ -6,7 +6,7 @@ class DifficultyManager
 {
 public:
     DifficultyManager();
-    void UpdateDifficulty(int currentScore, const Sound& levelUpSound);
+    void UpdateDifficulty(int currentScore);
     double GetDifficultyFactor();
     double GetDifficulty();
     int GetDifficultyNum();

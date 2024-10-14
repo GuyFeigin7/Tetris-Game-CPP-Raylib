@@ -150,8 +150,8 @@ obj/x64/Debug/Tetris/main.o: ../../src/main.cpp \
  /usr/include/c++/9/bits/invoke.h /usr/include/c++/9/bits/stl_multimap.h \
  /usr/include/c++/9/bits/erase_if.h ../../src/position.hpp \
  ../../src/colors.hpp ../../src/scoreManager.hpp \
- ../../src/difficultyManager.hpp ../../src/soundManager.hpp \
- ../../src/menu.hpp ../../src/gameState.hpp
+ ../../src/difficultyManager.hpp ../../src/menu.hpp \
+ ../../src/gameState.hpp
 
 /usr/include/stdc-predef.h:
 
@@ -546,8 +546,6 @@ obj/x64/Debug/Tetris/main.o: ../../src/main.cpp \
 ../../src/scoreManager.hpp:
 
 ../../src/difficultyManager.hpp:
-
-../../src/soundManager.hpp:
 
 ../../src/menu.hpp:
 

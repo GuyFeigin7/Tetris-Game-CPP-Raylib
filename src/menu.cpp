@@ -1,31 +1,23 @@
 #include "menu.hpp"
+#include "soundManager.hpp"
 
 Menu::Menu(const std::vector<std::string>& menuOptions, Game& newGame): options(menuOptions), 
                                                      selectedOption(0), 
                                                      gameState(GameState::MENU),
                                                      game(newGame)
-{
-    selectedOptionSound = LoadSound("Sounds/selectOption.mp3");
-    enterSound = LoadSound("Sounds/enterSound.mp3");
-}
-
-Menu::~Menu()
-{
-    UnloadSound(selectedOptionSound);
-    UnloadSound(enterSound);
-}
+{}
 
 void Menu::Update()
 {
     if (IsKeyPressed(KEY_DOWN))
     {
         selectedOption = (selectedOption + 1) % options.size();
-        PlaySound(selectedOptionSound);
+        SoundManager::GetInstance().PlaySelectedOptionSound();
     }
     else if (IsKeyPressed(KEY_UP))
     {
         selectedOption = (selectedOption - 1 + options.size()) % options.size();
-        PlaySound(selectedOptionSound);
+        SoundManager::GetInstance().PlaySelectedOptionSound();
     }
 }
 
@@ -57,7 +49,7 @@ void Menu::Display()
 
             if (IsKeyPressed(KEY_ENTER))
             {
-                PlaySound(enterSound);
+                SoundManager::GetInstance().PlayEnterSound();
                 int selected = GetSelectedOption();
                 if (selected == 0)
                 {
