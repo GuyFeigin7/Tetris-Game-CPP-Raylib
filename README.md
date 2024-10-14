@@ -33,3 +33,5 @@ Usage:
     Space: Rotate block
     P: Pause the game and access the pause menu
     R: Resart game after you lose 
+
+![Game Screenshot](Images/game.png)
