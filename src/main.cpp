@@ -10,7 +10,7 @@ int main ()
 
 	Game game;
 	game.Init(500, 620, 60, "Fonts/monogram.ttf", 64);
-	std::vector<std::string> menuOptions = {"Start Game", "View Scores", "Exit"};
+	std::vector<std::string> menuOptions = {"Start Game", "View Scores", "Controls", "Exit"};
     Menu menu(menuOptions, game);
 	menu.Display();
 	

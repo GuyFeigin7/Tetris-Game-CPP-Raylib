@@ -35,6 +35,31 @@ int Menu::GetSelectedOption() const
     return selectedOption;
 }
 
+void Menu::DisplayScores()
+{
+    DrawText("Scores coming soon!", 50, 250, 40, WHITE);
+
+    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_ESCAPE))
+    {
+        gameState = GameState::MENU;  // Return to menu
+    }
+}
+
+void Menu::DisplayControls()
+{
+    DrawText("Move block left: Left arrow key", 50, 150, 25, WHITE);
+    DrawText("Move block right: Right arrow key", 50, 200, 25, WHITE);
+    DrawText("Move block down: Down arrow key", 50, 250, 25, WHITE);
+    DrawText("Rotate block: Space", 50, 300, 25, WHITE);
+    DrawText("Pause game: P", 50, 350, 25, WHITE);
+    DrawText("Restart game: R", 50, 400, 25, WHITE);
+
+    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_ESCAPE))
+    {
+        gameState = GameState::MENU;  // Return to menu
+    }
+}
+
 void Menu::Display()
 {
     while (gameState != GameState::EXIT)
@@ -61,6 +86,10 @@ void Menu::Display()
                 }
                 else if (selected == 2)
                 {
+                    gameState = GameState::VIEW_CONTROLS;
+                }
+                else if (selected == 3)
+                {
                     gameState = GameState::EXIT;  // Exit game
                 }
             }
@@ -72,11 +101,11 @@ void Menu::Display()
         }
         else if (gameState == GameState::VIEW_SCORES)
         {
-            DrawText("Scores coming soon!", 50, 250, 40, WHITE);
-            if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_ESCAPE))
-            {
-                gameState = GameState::MENU;  // Return to menu
-            }
+            DisplayScores();
+        }
+        else if (gameState == GameState::VIEW_CONTROLS)
+        {
+            DisplayControls();
         }
         else if (gameState == GameState::EXIT)
         {

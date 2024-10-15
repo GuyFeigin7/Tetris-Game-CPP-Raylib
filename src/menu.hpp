@@ -20,6 +20,9 @@ public:
     // Returns the currently selected option
     int GetSelectedOption() const;
 
+    void DisplayScores();
+    void DisplayControls();
+    
     void Display();
 
 private:
