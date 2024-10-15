@@ -13,7 +13,7 @@ void DifficultyManager::UpdateDifficulty(int currentScore)
 {
     if (currentScore >= nextDifficulty && currentScore <= maxDifficulty)
     {
-        difficulty = difficulty * 0.9;
+        difficulty = difficulty - 0.025;
         nextDifficulty *= 2;
         difficultyFactor += 0.5;
         ++difficultyNum;
