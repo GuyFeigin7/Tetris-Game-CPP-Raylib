@@ -15,7 +15,7 @@ Features:
 
 Installation:
 
-    1. Clone the repository: git clone https://github.com/GuyFeigin96/tetris.git
+    1. Clone the repository: git clone https://github.com/GuyFeigin7/tetris.git
 
     2. Navigate to the project directory.
 
